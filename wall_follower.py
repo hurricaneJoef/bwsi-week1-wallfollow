@@ -15,10 +15,10 @@ class WallFollower:
     DRIVE_TOPIC = rospy.get_param("wall_follower/drive_topic")
     SIDE = rospy.get_param("wall_follower/side")
     VELOCITY = rospy.get_param("wall_follower/velocity")
-    DESIRED_DISTANCE = 5#rospy.get_param("wall_follower/desired_distance")
+    DESIRED_DISTANCE = 2#rospy.get_param("wall_follower/desired_distance")
     kp=1
-    ki=.0
-    kd=1
+    ki=0
+    kd=0
     lastsum=0
     def __init__(self):
         # Initialize your publishers and
@@ -50,7 +50,7 @@ class WallFollower:
         self.drive_pub.publish(self.cmd)
     def pid(self):
         #wall on right
-        pos=min(self.data.ranges[49:99])
+        pos=min(self.data.ranges)
         p=(self.DESIRED_DISTANCE-pos)
         d=np.sin((49-self.data.ranges.index(max(self.data.ranges)))*0.0471238898)#rads/point
         self.lastsum+=p
