@@ -14,8 +14,8 @@ class WallFollower:
     SCAN_TOPIC = rospy.get_param("wall_follower/scan_topic")
     DRIVE_TOPIC = rospy.get_param("wall_follower/drive_topic")
     SIDE = rospy.get_param("wall_follower/side")
-    VELOCITY = 10#rospy.get_param("wall_follower/velocity")
-    DESIRED_DISTANCE = 1.5#rospy.get_param("wall_follower/desired_distance")
+    VELOCITY = rospy.get_param("wall_follower/velocity")
+    DESIRED_DISTANCE = rospy.get_param("wall_follower/desired_distance")
     kp=.9
     ki=0
     kd=.4
