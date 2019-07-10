@@ -20,6 +20,7 @@ class WallFollower:
     ki=0
     kd=.4
     lastsum=0
+    nowall=True
     def __init__(self):
         # Initialize your publishers and
         # subscribers
@@ -51,6 +52,12 @@ class WallFollower:
     def pid(self):
         #wall on right
         pos=min(self.data.ranges)
+        if pos>2*self.DESIRED_DISTANCE:
+            self.nowall=True
+        if self.nowall:
+            if pos<1.2*self.DESIRED_DISTANCE:
+                self.nowall=False
+            return 0
         p=(self.DESIRED_DISTANCE-pos)
         d=np.cos((len(self.data.ranges)-self.data.ranges.index(max(self.data.ranges)))*1.5*np.pi/len(self.data.ranges))#rads/point
         self.lastsum+=p
