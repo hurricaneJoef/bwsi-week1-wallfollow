@@ -14,11 +14,11 @@ class WallFollower:
     SCAN_TOPIC = rospy.get_param("wall_follower/scan_topic")
     DRIVE_TOPIC = rospy.get_param("wall_follower/drive_topic")
     SIDE = rospy.get_param("wall_follower/side")
-    VELOCITY = rospy.get_param("wall_follower/velocity")
-    DESIRED_DISTANCE = rospy.get_param("wall_follower/desired_distance")
-    kp=1
+    VELOCITY = 10#rospy.get_param("wall_follower/velocity")
+    DESIRED_DISTANCE = 1.5#rospy.get_param("wall_follower/desired_distance")
+    kp=.9
     ki=0
-    kd=.5
+    kd=.4
     lastsum=0
     def __init__(self):
         # Initialize your publishers and
@@ -52,7 +52,7 @@ class WallFollower:
         #wall on right
         pos=min(self.data.ranges)
         p=(self.DESIRED_DISTANCE-pos)
-        d=pos-np.sin((49-self.data.ranges.index(max(self.data.ranges)))*0.0471238898)#rads/point
+        d=np.cos((len(self.data.ranges)-self.data.ranges.index(max(self.data.ranges)))*1.5*np.pi/len(self.data.ranges))#rads/point
         self.lastsum+=p
         i=self.lastsum
         print ("kp is {0}. ki is {1}. kd is {2}. the pos is {3} the p is{4} the i is{5} the d is{6}.".format(self.kp,self.ki,self.kd,pos, p,i,d))
