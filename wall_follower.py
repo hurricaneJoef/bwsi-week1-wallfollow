@@ -15,10 +15,10 @@ class WallFollower:
     DRIVE_TOPIC = rospy.get_param("wall_follower/drive_topic")
     SIDE = rospy.get_param("wall_follower/side")
     VELOCITY = rospy.get_param("wall_follower/velocity")
-    DESIRED_DISTANCE = 2#rospy.get_param("wall_follower/desired_distance")
+    DESIRED_DISTANCE = rospy.get_param("wall_follower/desired_distance")
     kp=1
     ki=0
-    kd=0
+    kd=.5
     lastsum=0
     def __init__(self):
         # Initialize your publishers and
@@ -52,7 +52,7 @@ class WallFollower:
         #wall on right
         pos=min(self.data.ranges)
         p=(self.DESIRED_DISTANCE-pos)
-        d=np.sin((49-self.data.ranges.index(max(self.data.ranges)))*0.0471238898)#rads/point
+        d=pos-np.sin((49-self.data.ranges.index(max(self.data.ranges)))*0.0471238898)#rads/point
         self.lastsum+=p
         i=self.lastsum
         print ("kp is {0}. ki is {1}. kd is {2}. the pos is {3} the p is{4} the i is{5} the d is{6}.".format(self.kp,self.ki,self.kd,pos, p,i,d))
@@ -69,7 +69,7 @@ class WallFollower:
         Lidar data at an index is the distance to the nearest detected object
         self.data.ranges[0] gives the leftmost lidar point
         self.data.ranges[99] gives the rightmost lidar point
-        self.data.ranges[49] gives the forward lidar point
+        .self.data.ranges[49] gives the forward lidar point
         """
         tempAngle=self.pid()
         
